@@ -45,7 +45,7 @@ namespace Transform
 
         public Transform Transform
         {
-            get { throw new NotImplementedException(); }
+            get { return transform; }
         }
 
         public vec3 GetAbsolutePosition()
@@ -81,7 +81,7 @@ namespace Transform
 
         public Transform Transform
         {
-            get { throw new NotImplementedException(); }
+            get { return transform; }
         }
 
         public vec3 GetAbsoluteRotation()
@@ -122,7 +122,7 @@ namespace Transform
 
         public Transform Transform
         {
-            get { throw new NotImplementedException(); }
+            get { return transform; }
         }
 
         public vec3 GetAbsoluteScale()
@@ -151,7 +151,7 @@ namespace Render
 {
     class MainClass
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             Transform.Transform tfm = new Transform.Transform();
 
