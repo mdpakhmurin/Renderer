@@ -1,5 +1,5 @@
 ﻿using System;
-using TFM;
+using Scene.Transform;
 
 namespace Render
 {
@@ -9,6 +9,8 @@ namespace Render
         {
             Transform tfm = new Transform();
             Console.WriteLine(tfm.Scale.GetLocalScale());
+            //Position
+
 
             Console.WriteLine("Hello World!");
         }
