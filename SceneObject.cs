@@ -53,12 +53,22 @@ namespace Scene.SceneObject
 
         public void AttachChild(SceneObject sceneObject)
         {
+            foreach (var child in children)
+            {
+                if (child == sceneObject)
+                    return;
+            }
             children.Add(sceneObject);
         }
 
         public void DetachChild(SceneObject sceneObject)
         {
             throw new NotImplementedException();
+        }
+
+        public List<SceneObject> GetChildren()
+        {
+            return children;
         }
 
         public List<SceneObject> GetChildrenByName(String name)
