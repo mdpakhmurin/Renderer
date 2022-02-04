@@ -4,20 +4,68 @@ using GlmNet;
 namespace Transform
 {
     class Transform
-    { 
-        public Position Position
+    {
+        private Position position;
+        private Rotation rotation;
+        private Scale scale;
+
+        public Transform()
         {
-            get { throw new NotImplementedException(); }
+            position = new Position(this);
+            rotation = new Rotation(this);
+            scale = new Scale(this);
         }
 
-        public Scale Scale
+        public Position Position
         {
-            get { throw new NotImplementedException(); }
+            get { return position; }
         }
 
         public Rotation Rotation
         {
+            get { return rotation; }
+        }
+
+        public Scale Scale
+        {
+            get { return scale; }
+        }
+    }
+
+    class Position
+    {
+        private Transform transform;
+        vec3 position;
+
+        public Position(Transform transform)
+        {
+            this.transform = transform;
+            position = new vec3(0, 0, 0);
+        }
+
+        public Transform Transform
+        {
             get { throw new NotImplementedException(); }
+        }
+
+        public vec3 GetAbsolutePosition()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetAbsolutePosition(vec3 position)
+        {
+            throw new NotImplementedException();
+        }
+
+        public vec3 GetLocalPosition()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLocalPosition(vec3 position)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -57,42 +105,6 @@ namespace Transform
         }
 
         public void RotateByAngle()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    class Position {
-        private Transform transform;
-        vec3 position;
-
-        public Position(Transform transform)
-        {
-            this.transform = transform;
-            position = new vec3(0, 0, 0);
-        }
-
-        public Transform Transform
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public vec3 GetAbsolutePosition()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetAbsolutePosition(vec3 position)
-        {
-            throw new NotImplementedException();
-        }
-
-        vec3 GetLocalPosition()
-        {
-            throw new NotImplementedException();
-        }
-
-        void SetLocalPosition(vec3 position)
         {
             throw new NotImplementedException();
         }
@@ -141,7 +153,7 @@ namespace Render
     {
         public static void Main(string[] args)
         {
-
+            Transform.Transform tfm = new Transform.Transform();
 
             Console.WriteLine("Hello World!");
         }
