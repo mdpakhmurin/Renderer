@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Scene.SceneObject
 {
@@ -66,12 +67,12 @@ namespace Scene.SceneObject
             children.Remove(sceneObject);
         }
 
-        public List<SceneObject> GetChildren()
+        public ReadOnlyCollection<SceneObject> GetChildren()
         {
-            return children;
+            return children.AsReadOnly();
         }
 
-        public List<SceneObject> GetChildrenByName(String name)
+        public ReadOnlyCollection<SceneObject> GetChildrenByName(String name)
         {
             var found = new List<SceneObject>();
 
@@ -83,7 +84,7 @@ namespace Scene.SceneObject
                 }
             }
 
-            return found;
+            return found.AsReadOnly();
         }
     }
 }
