@@ -63,7 +63,7 @@ namespace Scene.SceneObject
 
         public void DetachChild(SceneObject sceneObject)
         {
-            throw new NotImplementedException();
+            children.Remove(sceneObject);
         }
 
         public List<SceneObject> GetChildren()
