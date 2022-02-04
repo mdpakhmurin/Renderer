@@ -60,12 +60,12 @@ namespace Transform
 
         public vec3 GetLocalPosition()
         {
-            throw new NotImplementedException();
+            return position;
         }
 
         public void SetLocalPosition(vec3 position)
         {
-            throw new NotImplementedException();
+            this.position = position;
         }
     }
 
@@ -96,12 +96,12 @@ namespace Transform
 
         public vec3 GetLocalRotation()
         {
-            throw new NotImplementedException();
+            return rotation;
         }
 
-        public vec3 SetLocalRotation(vec3 rotation)
+        public void SetLocalRotation(vec3 rotation)
         {
-            throw new NotImplementedException();
+            this.rotation = rotation;
         }
 
         public void RotateByAngle()
@@ -137,12 +137,12 @@ namespace Transform
 
         public vec3 GetLocalScale()
         {
-            throw new NotImplementedException();
+            return scale;
         }
 
         public void SetLocalScale(vec3 scale)
         {
-            throw new NotImplementedException();
+            this.scale = scale;
         }
     }
 }
@@ -154,6 +154,7 @@ namespace Render
         public static void Main()
         {
             Transform.Transform tfm = new Transform.Transform();
+            vec3 aboba = new vec3(1, 2, 3);
 
             Console.WriteLine("Hello World!");
         }
