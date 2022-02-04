@@ -6,7 +6,7 @@ namespace Scene.Transform
     /// <summary>
     /// Трансформации объетка.
     /// </summary>
-    public class Transform
+    class Transform
     {
         // Позиция объекта.
         private Position position;
