@@ -9,7 +9,7 @@ namespace Scene.SceneObject
         private string name;
         private SceneObject parent;
         private Transform.Transform transform;
-        private Children children;
+        private ChildrenContainer children;
 
         public SceneObject(string name = "new object")
         {
@@ -17,7 +17,7 @@ namespace Scene.SceneObject
 
             parent = null;
             transform = new Transform.Transform();
-            children = new Children();
+            children = new ChildrenContainer(this);
         }
 
         public string Name
@@ -29,6 +29,13 @@ namespace Scene.SceneObject
         public SceneObject Parent
         {
             get { return parent; }
+            set
+            {
+                if (value == this)
+                    throw new ArgumentException("Объект не может являться своим родителем");
+
+                value.children.AttachChild(this);
+            }
         }
 
         public Transform.Transform Transform
@@ -36,55 +43,62 @@ namespace Scene.SceneObject
             get { return transform; }
         }
 
-        public Children Children{
+        public ChildrenContainer Children
+        {
             get { return children; }
         }
 
         public abstract void Update();
-    }
 
-    class Children
-    {
-        List<SceneObject> children;
-
-        public Children()
+        public class ChildrenContainer
         {
-            children = new List<SceneObject>();
-        }
+            private SceneObject parent;
+            private List<SceneObject> children;
 
-        public void AttachChild(SceneObject sceneObject)
-        {
-            foreach (var child in children)
+            public ChildrenContainer(SceneObject parent)
             {
-                if (child == sceneObject)
-                    return;
+                children = new List<SceneObject>();
+                this.parent = parent;
             }
-            children.Add(sceneObject);
-        }
 
-        public void DetachChild(SceneObject sceneObject)
-        {
-            children.Remove(sceneObject);
-        }
-
-        public ReadOnlyCollection<SceneObject> GetChildren()
-        {
-            return children.AsReadOnly();
-        }
-
-        public ReadOnlyCollection<SceneObject> GetChildrenByName(String name)
-        {
-            var found = new List<SceneObject>();
-
-            foreach (var child in children)
+            public void AttachChild(SceneObject sceneObject)
             {
-                if (child.Name == name)
+                sceneObject.Parent?.Children.DetachChild(sceneObject);
+ 
+                sceneObject.parent = parent;
+
+                foreach (var child in children)
                 {
-                    found.Add(child);
+                    if (child == sceneObject)
+                        return;
                 }
+                children.Add(sceneObject);
             }
 
-            return found.AsReadOnly();
+            public void DetachChild(SceneObject sceneObject)
+            {
+                children.Remove(sceneObject);
+            }
+
+            public ReadOnlyCollection<SceneObject> GetChildren()
+            {
+                return children.AsReadOnly();
+            }
+
+            public ReadOnlyCollection<SceneObject> GetChildrenByName(String name)
+            {
+                var found = new List<SceneObject>();
+
+                foreach (var child in children)
+                {
+                    if (child.Name == name)
+                    {
+                        found.Add(child);
+                    }
+                }
+
+                return found.AsReadOnly();
+            }
         }
     }
 }

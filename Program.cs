@@ -1,18 +1,23 @@
 ﻿using System;
-using Scene.Transform;
+using Scene.SceneObject;
 
 namespace Render
 {
+    class Player : SceneObject
+    {
+        public Player(string name = "new object") : base(name) { }
+
+        public override void Update()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     class MainClass
     {
         public static void Main()
         {
-            Transform tfm = new Transform();
-            Console.WriteLine(tfm.Scale.GetLocalScale());
-            //Position
-
-
-            Console.WriteLine("Hello World!");
+            var player = new Player("player#0000");
         }
     }
 }
