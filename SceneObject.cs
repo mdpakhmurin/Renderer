@@ -3,12 +3,21 @@ using System.Collections.Generic;
 
 namespace Scene.SceneObject
 {
-    public abstract class SceneObject
+    abstract class SceneObject
     {
         private string name;
         private SceneObject parent;
         private Transform.Transform transform;
         private Children children;
+
+        public SceneObject(string name = "new object")
+        {
+            this.name = name;
+
+            parent = null;
+            transform = new Transform.Transform();
+            children = new Children();
+        }
 
         public string Name
         {
@@ -33,9 +42,14 @@ namespace Scene.SceneObject
         public abstract void Update();
     }
 
-    public class Children
+    class Children
     {
         List<SceneObject> children;
+
+        public Children()
+        {
+            children = new List<SceneObject>();
+        }
 
         public void AttachChild(SceneObject sceneObject)
         {
