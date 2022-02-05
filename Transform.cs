@@ -6,7 +6,7 @@ namespace Scene.Transform
     /// <summary>
     /// Трансформации объетка.
     /// </summary>
-    class Transform
+    public class Transform
     {
         // Позиция объекта.
         private Position position;
@@ -52,7 +52,7 @@ namespace Scene.Transform
     /// <summary>
     /// Положение объекта на сцене.
     /// </summary>
-    class Position
+    public class Position
     {
         // Все трансформации объекта.
         private Transform transform;
@@ -114,7 +114,7 @@ namespace Scene.Transform
     /// <summary>
     /// Вращение объекта
     /// </summary>
-    class Rotation
+    public class Rotation
     {
         // Все трансформации объекта.
         private Transform transform;
@@ -178,7 +178,7 @@ namespace Scene.Transform
         }
     }
 
-    class Scale
+    public class Scale
     {
         // Все трансформации объекта.
         Transform transform;
