@@ -22,7 +22,7 @@ namespace Scene.SceneObject
         {
             this.name = name;
             hierarchy = new Hierarchy.Hierarchy(this);
-            transform = new Transform.Transform();
+            transform = new Transform.Transform(this);
         }
 
         /// <summary>

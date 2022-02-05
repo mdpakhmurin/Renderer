@@ -8,6 +8,9 @@ namespace Scene.Transform
     /// </summary>
     public class Transform
     {
+        // текущий объект (к которому привязана трансформация).
+        private SceneObject.SceneObject sceneObject;
+
         // Позиция объекта.
         private Position position;
 
@@ -17,11 +20,20 @@ namespace Scene.Transform
         // Размер объекта.
         private Scale scale;
 
-        public Transform()
+        public Transform(SceneObject.SceneObject sceneObject)
         {
+            this.sceneObject = sceneObject;
             position = new Position(this);
             rotation = new Rotation(this);
             scale = new Scale(this);
+        }
+
+        /// <summary>
+        /// Текущий объект на сцене
+        /// </summary>
+        public SceneObject.SceneObject SceneObject
+        {
+            get { return sceneObject; }
         }
 
         /// <summary>
@@ -170,11 +182,6 @@ namespace Scene.Transform
         public void SetLocalRotation(vec3 rotation)
         {
             this.rotation = rotation;
-        }
-
-        public void RotateByAngle()
-        {
-            throw new NotImplementedException();
         }
     }
 

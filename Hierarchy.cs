@@ -7,21 +7,21 @@ namespace Scene.Hierarchy
 {
     public class Hierarchy
     {
-        // Родительский объект
+        // Родительский объект.
         private SceneObject.SceneObject parent;
 
-        // Текущий объект
+        // Текущий объект (к которому привязана иерархия).
         private SceneObject.SceneObject currentObject;
 
-        // Потомки объекта
+        // Потомки объекта.
         private List<SceneObject.SceneObject> children;
 
         /// <summary>
         /// Устанавливает родителя.
         /// (Открепляет от прошлого и добавляет к новому).
         /// </summary>
-        /// <param name="newParent">Родительский объект</param>
-        /// <exception cref="ArgumentException">Объект не может являться своим потомком</exception>
+        /// <param name="newParent">Родительский объект.</param>
+        /// <exception cref="ArgumentException">Объект не может являться своим потомком.</exception>
         private void SetParent(SceneObject.SceneObject newParent)
         {
             // Проверка является ли прошлый родитель новым родителем.
@@ -38,7 +38,7 @@ namespace Scene.Hierarchy
                 newParentTemp = newParentTemp.Hierarchy.Parent;
             }
 
-            // Открепление от прошлого родителя
+            // Открепление от прошлого родителя.
             Parent?.Hierarchy.children.Remove(currentObject);
 
             // Прикрепление нового родителя.
@@ -58,13 +58,11 @@ namespace Scene.Hierarchy
         public SceneObject.SceneObject Parent
         {
             get { return parent; }
-            set { 
-                SetParent(value);
-            }
+            set { SetParent(value); }
         }
 
         /// <summary>
-        /// Текущий объект
+        /// Текущий объект.
         /// </summary>
         public SceneObject.SceneObject CurrentObject
         {
@@ -72,7 +70,7 @@ namespace Scene.Hierarchy
         }
 
         /// <summary>
-        /// Добавляет дочерний объект к текущему
+        /// Добавляет дочерний объект к текущему.
         /// </summary>
         /// <param name="child"></param>
         public void AddChild(SceneObject.SceneObject child)
