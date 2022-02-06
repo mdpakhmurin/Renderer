@@ -1,5 +1,5 @@
 ﻿using System;
-using GlmNet;
+using OpenTK.Mathematics;
 
 namespace Scene.Transform
 {
@@ -70,12 +70,12 @@ namespace Scene.Transform
         private Transform transform;
 
         // Позиция объекта, относительно родителя
-        vec3 position;
+        Vector3 position;
 
         public Position(Transform transform)
         {
             this.transform = transform;
-            position = new vec3(0, 0, 0);
+            position = new Vector3(0, 0, 0);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Scene.Transform
         /// Получает абсолютное положение объекта.
         /// </summary>
         /// <returns>Положение объекта (x, y, z).</returns>
-        public vec3 GetAbsolutePosition()
+        public Vector3 GetAbsolutePosition()
         {
             throw new NotImplementedException();
         }
@@ -99,7 +99,7 @@ namespace Scene.Transform
         /// Устанавливает абсолютное положение объекта.
         /// </summary>
         /// <param name="position">Положение объекта (x, y, z).</param>
-        public void SetAbsolutePosition(vec3 position)
+        public void SetAbsolutePosition(Vector3 position)
         {
             throw new NotImplementedException();
         }
@@ -108,7 +108,7 @@ namespace Scene.Transform
         /// Получает положение объекта, относительно его родителя.
         /// </summary>
         /// <returns>Положение объекта (x, y, z).</returns>
-        public vec3 GetLocalPosition()
+        public Vector3 GetLocalPosition()
         {
             return position;
         }
@@ -117,7 +117,7 @@ namespace Scene.Transform
         /// Устанавливает получает положение объекта, относительно его родителя.
         /// </summary>
         /// <param name="position">Положение объекта (x, y, z).</param>
-        public void SetLocalPosition(vec3 position)
+        public void SetLocalPosition(Vector3 position)
         {
             this.position = position;
         }
@@ -132,12 +132,12 @@ namespace Scene.Transform
         private Transform transform;
 
         // Последовательное вращение объекта, относительно родителя.
-        private vec3 rotation;
+        private Vector3 rotation;
 
         public Rotation(Transform transform)
         {
             this.transform = transform;
-            rotation = new vec3(0, 0, 0);
+            rotation = new Vector3(0, 0, 0);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Scene.Transform
         /// Получает абсолютное вращение объекта.
         /// </summary>
         /// <returns>Последовательное вращение объекта вокруг осей (x, y, z).</returns>
-        public vec3 GetAbsoluteRotation()
+        public Vector3 GetAbsoluteRotation()
         {
             throw new NotImplementedException();
         }
@@ -161,7 +161,7 @@ namespace Scene.Transform
         /// Устанавливает абсолютное вращение объекта.
         /// </summary>
         /// <param name="rotation">Последовательное вращение объекта вокруг осей (x, y, z).</param>
-        public void SetAbsoluteRotation(vec3 rotation)
+        public void SetAbsoluteRotation(Vector3 rotation)
         {
             throw new NotImplementedException();
         }
@@ -170,7 +170,7 @@ namespace Scene.Transform
         /// Получает вращение объекта, относительно его родителя.
         /// </summary>
         /// <returns>Последовательное вращение объекта вокруг осей (x, y, z).</returns>
-        public vec3 GetLocalRotation()
+        public Vector3 GetLocalRotation()
         {
             return rotation;
         }
@@ -179,7 +179,7 @@ namespace Scene.Transform
         /// Последовательное вращение объекта вокруг осей(x, y, z).
         /// </summary>
         /// <param name="rotation">Последовательное вращение объекта вокруг осей (x, y, z).</param>
-        public void SetLocalRotation(vec3 rotation)
+        public void SetLocalRotation(Vector3 rotation)
         {
             this.rotation = rotation;
         }
@@ -191,12 +191,12 @@ namespace Scene.Transform
         Transform transform;
 
         // Размер объекта, относительно родителя.
-        vec3 scale;
+        Vector3 scale;
 
         public Scale(Transform transform)
         {
             this.transform = transform;
-            scale = new vec3(1, 1, 1);
+            scale = new Vector3(1, 1, 1);
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Scene.Transform
         /// Получает абсолютный размер объекта.
         /// </summary>
         /// <returns>Размер объекта по каждой из осей (x, y, z).</returns>
-        public vec3 GetAbsoluteScale()
+        public Vector3 GetAbsoluteScale()
         {
             throw new NotImplementedException();
         }
@@ -220,7 +220,7 @@ namespace Scene.Transform
         /// Устанавливает абсолютный размер объекта.
         /// </summary>
         /// <param name="scale">Размер объекта по каждой из осей (x, y, z).</param>
-        public void SetAbsoluteScale(vec3 scale)
+        public void SetAbsoluteScale(Vector3 scale)
         {
             throw new NotImplementedException();
         }
@@ -229,7 +229,7 @@ namespace Scene.Transform
         /// Получает размер объекта, относительно его родителя
         /// </summary>
         /// <returns>Размер объекта по каждой из осей (x, y, z).</returns>
-        public vec3 GetLocalScale()
+        public Vector3 GetLocalScale()
         {
             return scale;
         }
@@ -238,7 +238,7 @@ namespace Scene.Transform
         /// Устанавливает размер объекта, относительно его родителя
         /// </summary>
         /// <param name="scale">Размер объекта по каждой из осей (x, y, z).</param>
-        public void SetLocalScale(vec3 scale)
+        public void SetLocalScale(Vector3 scale)
         {
             this.scale = scale;
         }

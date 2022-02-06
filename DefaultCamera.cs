@@ -1,4 +1,4 @@
-﻿using GlmNet;
+﻿using OpenTK.Mathematics;
 using Scene.SceneObject;
 
 namespace Scene.Defaults
@@ -10,7 +10,7 @@ namespace Scene.Defaults
         public float DistanceToNearPlane { get; set; }
         public float DistanceToFarPlane { get; set; }
 
-        public vec2 AspectRatioNearPlane  { get; set; }
-        public vec2 AspectRatioFarPlane { get; set; }
+        public Vector3 AspectRatioNearPlane  { get; set; }
+        public Vector3 AspectRatioFarPlane { get; set; }
     }
 }
