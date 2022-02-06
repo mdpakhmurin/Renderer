@@ -1,33 +1,25 @@
 ﻿using System;
 using Scene.SceneObject;
+using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Desktop;
 
 namespace Render
 {
-    class Player : SceneObject
+    public class Window : GameWindow
     {
-        public Player(string name = "new object") : base(name) { }
-
-        public override string ToString()
+        public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : 
+            base(gameWindowSettings, nativeWindowSettings)
         {
-            string str = Name + " -> [";
-            foreach (var child in Hierarchy.GetChildren())
-            {
-                str += child.ToString();
-            }
-            str += "]; ";
-
-            return str;
         }
     }
-
     class MainClass
     {
         public static void Main()
         {
-            var player1 = new Player("player1");
-
-            Console.WriteLine(player1);
-            Console.ReadKey();
+            var newWindow = new Window(GameWindowSettings.Default, NativeWindowSettings.Default);
+            newWindow.Run();
         }
     }
 }
