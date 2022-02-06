@@ -7,11 +7,6 @@ namespace Render
     {
         public Player(string name = "new object") : base(name) { }
 
-        public override void Update()
-        {
-            throw new NotImplementedException();
-        }
-
         public override string ToString()
         {
             string str = Name + " -> [";

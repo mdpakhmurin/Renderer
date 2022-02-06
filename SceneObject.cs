@@ -5,9 +5,11 @@ using System.Collections.ObjectModel;
 namespace Scene.SceneObject
 {
     /// <summary>
-    /// Объект на сцене, хранит в себе таких же потомков (Компоновщик)
+    /// Объект на сцене, хранит в себе таких же потомков.
+    /// Каждый объект сцены должен расширяется единственной ответственностью 
+    /// и представлять собой узел иерархии сцены.
     /// </summary>
-    public abstract class SceneObject
+    public class SceneObject
     {
         // Имя объекта.
         private string name;
@@ -49,6 +51,6 @@ namespace Scene.SceneObject
             get { return hierarchy; }
         }
 
-        public abstract void Update();
+        public virtual void Update() { }
     }
 }
