@@ -52,10 +52,12 @@ namespace Render
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, File.ReadAllText(@"Resources\Shaders\VertexShader.glsl"));
             GL.CompileShader(vertexShader);
+            Console.WriteLine(GL.GetShaderInfoLog(vertexShader));
 
             var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, File.ReadAllText(@"Resources\Shaders\FragmentShader.glsl"));
             GL.CompileShader(fragmentShader);
+            Console.WriteLine(GL.GetShaderInfoLog(fragmentShader));
 
             _program = GL.CreateProgram();
             GL.AttachShader(_program, vertexShader);
@@ -81,7 +83,9 @@ namespace Render
     {
         public static void Main()
         {
-            var newWindow = new Window(GameWindowSettings.Default, NativeWindowSettings.Default);
+            var windowSettings = new NativeWindowSettings();
+            windowSettings.Size = new Vector2i(600, 600);
+            var newWindow = new Window(GameWindowSettings.Default, windowSettings);
             newWindow.Run();
         }
     }
