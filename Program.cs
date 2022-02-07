@@ -11,6 +11,92 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Render
 {
+    public abstract class Shader
+    {
+        protected int id;
+        public Shader(string shaderSourceCode) { }
+
+        public int Id
+        {
+            get { return id; }
+        }
+
+        protected static int compileShader(ShaderType shaderType, string shaderSourceCode)
+        {
+            var shader = GL.CreateShader(shaderType);
+            GL.ShaderSource(shader, shaderSourceCode);
+            GL.CompileShader(shader);
+
+            var shaderCompileLog = GL.GetShaderInfoLog(shader);
+            if (shaderCompileLog != "")
+                throw new Exception("Ошибка компиляции шейдера " + shaderCompileLog);
+
+            return shader;
+        }
+    }
+
+    public class VertexShader : Shader
+    {
+        public VertexShader(string shaderSourceCode) : base(shaderSourceCode)
+        {
+            id = compileShader(ShaderType.VertexShader, shaderSourceCode);
+        }
+    }
+
+    public class ShaderProgram
+    {
+        private int id;
+
+        private VertexShader vertexShader;
+        private FragmentShader fragmentShader;
+        public ShaderProgram(VertexShader vertexShader, FragmentShader fragmentShader)
+        {
+            id = GL.CreateProgram();
+
+            VertexShader = vertexShader;
+            FragmentShader = fragmentShader;
+        }
+
+        public int Id
+        {
+            get { return id; }
+        }
+
+        public VertexShader VertexShader
+        {
+            get { return vertexShader; }
+            set
+            {
+                vertexShader = value;
+                GL.AttachShader(id, vertexShader.Id);
+                GL.LinkProgram(id);
+            }
+        }
+
+        public FragmentShader FragmentShader
+        {
+            get { return fragmentShader; }
+            set
+            {
+                fragmentShader = value;
+                GL.AttachShader(id, fragmentShader.Id);
+                GL.LinkProgram(id);
+            }
+        }
+
+        public void Use()
+        {
+            GL.UseProgram(id);
+        }
+    }
+
+    public class FragmentShader : Shader
+    {
+        public FragmentShader(string shaderSourceCode) : base(shaderSourceCode)
+        {
+            id = compileShader(ShaderType.FragmentShader, shaderSourceCode);
+        }
+    }
     public class Window : GameWindow
     {
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) :
@@ -32,7 +118,7 @@ namespace Render
 
         private int _vertexArrayObject;
 
-        private int _program;
+        private ShaderProgram _program;
 
         protected override void OnLoad()
         {
@@ -49,22 +135,12 @@ namespace Render
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
 
-            var vertexShader = GL.CreateShader(ShaderType.VertexShader);
-            GL.ShaderSource(vertexShader, File.ReadAllText(@"Resources\Shaders\VertexShader.glsl"));
-            GL.CompileShader(vertexShader);
-            Console.WriteLine(GL.GetShaderInfoLog(vertexShader));
+            var vertexShader = new VertexShader(File.ReadAllText(@"Resources\Shaders\VertexShader.glsl"));
 
-            var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
-            GL.ShaderSource(fragmentShader, File.ReadAllText(@"Resources\Shaders\FragmentShader.glsl"));
-            GL.CompileShader(fragmentShader);
-            Console.WriteLine(GL.GetShaderInfoLog(fragmentShader));
+            var fragmentShader = new FragmentShader(File.ReadAllText(@"Resources\Shaders\FragmentShader.glsl"));
 
-            _program = GL.CreateProgram();
-            GL.AttachShader(_program, vertexShader);
-            GL.AttachShader(_program, fragmentShader);
-            GL.LinkProgram(_program);
-
-            GL.UseProgram(_program);
+            _program = new ShaderProgram(vertexShader, fragmentShader);
+            _program.Use();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -72,7 +148,7 @@ namespace Render
             base.OnRenderFrame(e);
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
-            GL.UseProgram(_program);
+            _program.Use();
             GL.BindVertexArray(_vertexArrayObject);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
