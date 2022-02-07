@@ -20,9 +20,12 @@ namespace Render
 
         private float[] _vertices =
         {
-            -0.5f, -0.5f, 0.0f,
-             0.5f, -0.5f, 0.0f,
-             0.0f,  0.5f, 0.0f
+            -0.9f, -0.9f, 0,
+             0.9f, -0.9f, 0,
+             0.9f,  0.9f, 0,
+             0.9f,  0.9f, 0,
+            -0.9f,  0.9f, 0,
+            -0.9f, -0.9f, 0
         };
 
         private int _vertexBufferObject;
@@ -35,11 +38,12 @@ namespace Render
         {
             base.OnLoad();
 
-            GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            GL.ClearColor(1, 1, 1, 1);
 
             _vertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
+
             _vertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(_vertexArrayObject);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
@@ -68,7 +72,7 @@ namespace Render
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.UseProgram(_program);
             GL.BindVertexArray(_vertexArrayObject);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
             SwapBuffers();
         }
