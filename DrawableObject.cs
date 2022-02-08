@@ -22,12 +22,12 @@ namespace Scene.Defaults
         {
             float[] canvasVerticesPos =
             {
-                -0.9f, -0.9f, 0,
-                 0.9f, -0.9f, 0,
-                 0.9f,  0.9f, 0,
-                 0.9f,  0.9f, 0,
-                -0.9f,  0.9f, 0,
-                -0.9f, -0.9f, 0
+                -0.9f, -0.9f,
+                 0.9f, -0.9f,
+                 0.9f,  0.9f,
+                 0.9f,  0.9f,
+                -0.9f,  0.9f,
+                -0.9f, -0.9f
             };
 
             int vbo = GL.GenBuffer();
@@ -44,7 +44,7 @@ namespace Scene.Defaults
                 BufferUsageHint.StaticDraw);
 
 
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 0, 0);
             GL.BindVertexArray(0);
 
             var vertexShader = new VertexShader(File.ReadAllText(@"Resources\Shaders\VertexShader.glsl"));
