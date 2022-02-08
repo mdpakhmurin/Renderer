@@ -88,5 +88,10 @@ namespace Scene.Utilities
         {
             GL.UseProgram(id);
         }
+
+        public int GetUniform(string name)
+        {
+            return GL.GetUniformLocation(id, name);
+        }
     }
 }
