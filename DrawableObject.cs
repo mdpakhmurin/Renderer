@@ -37,7 +37,8 @@ namespace Scene.Defaults
             GL.BindVertexArray(vao);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer,
+            GL.BufferData(
+                BufferTarget.ArrayBuffer,
                 canvasVerticesPos.Length * sizeof(float),
                 canvasVerticesPos,
                 BufferUsageHint.StaticDraw);
@@ -56,6 +57,10 @@ namespace Scene.Defaults
             base.Draw(camera);
 
             shaderProgram.Use();
+
+            GL.Uniform3(
+                shaderProgram.GetUniform("cameraPosition"),
+                camera.Transform.Position.GetAbsolutePosition());
 
             GL.BindVertexArray(vao);
             GL.EnableVertexAttribArray(0);

@@ -3,7 +3,7 @@ using Scene.SceneObject;
 
 namespace Scene.Defaults
 {
-    class Camera: SceneObject.SceneObject
+    public class Camera: SceneObject.SceneObject
     {
         public Camera(string name = "newCamera") : base(name) { }
 

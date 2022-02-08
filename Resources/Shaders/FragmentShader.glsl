@@ -1,5 +1,7 @@
 ﻿#version 330
 
+uniform vec3 cameraPosition;
+
 float hit_sphere(vec3 ray_start_position, vec3 ray_direction) {
 	vec3 sphere_center = vec3(0, 0, 3);
 	vec3 oc = ray_start_position - sphere_center;
@@ -21,9 +23,13 @@ in vec2 pos;
 void main()
 {
 	vec2 newPos = pos / 0.9;
-	vec3 camera_position = vec3(0, 0, 1);
+	float nearPlaneDistance = 0;
+	float farPlaneDistance = 4;
+	float farScale = 2;
 
-	float dist = hit_sphere(camera_position, vec3(newPos,1.0));
+	vec3 diretction = vec3(newPos * farScale - newPos, farPlaneDistance - nearPlaneDistance);
+
+	float dist = hit_sphere(cameraPosition, diretction);
 	if (dist > 0){
 		outputColor = vec4(dist, 0, 0, 1);
 	}

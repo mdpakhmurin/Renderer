@@ -12,6 +12,7 @@ namespace Render
     public class Window : GameWindow
     {
         public VoxelGrid voxelGrid;
+        public Camera camera;
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) :
             base(gameWindowSettings, nativeWindowSettings)
         {
@@ -22,6 +23,9 @@ namespace Render
             base.OnLoad();
 
             voxelGrid = new VoxelGrid();
+            camera = new Camera();
+            camera.Transform.Position.SetLocalPosition(new Vector3(0, -0.5f, -10));
+
             GL.ClearColor(1, 1, 1, 1);
         }
 
@@ -30,7 +34,7 @@ namespace Render
             base.OnRenderFrame(e);
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
-            voxelGrid.Draw(null);
+            voxelGrid.Draw(camera);
 
             SwapBuffers();
         }
