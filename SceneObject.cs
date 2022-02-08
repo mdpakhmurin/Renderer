@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-
-namespace Scene.SceneObject
+﻿namespace Scene.SceneObject
 {
     /// <summary>
     /// Объект на сцене, хранит в себе таких же потомков.
@@ -47,7 +43,8 @@ namespace Scene.SceneObject
         /// <summary>
         /// Иерархия объекта (родитель/дочерние объекты). 
         /// </summary>
-        public Hierarchy.Hierarchy Hierarchy{
+        public Hierarchy.Hierarchy Hierarchy
+        {
             get { return hierarchy; }
         }
 

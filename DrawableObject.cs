@@ -32,7 +32,7 @@ namespace Scene.Defaults
                 -0.9f, -0.9f
             };
 
-            int vbo = GL.GenBuffer();
+            vbo = GL.GenBuffer();
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             GL.BufferData(
