@@ -16,9 +16,11 @@ namespace Scene.Defaults
     public class VoxelGrid : DrawableObject
     {
         private ShaderProgram shaderProgram;
+        private int vbo;
         private int vao;
 
-        public VoxelGrid()
+
+        private void initVBO()
         {
             float[] canvasVerticesPos =
             {
@@ -31,10 +33,6 @@ namespace Scene.Defaults
             };
 
             int vbo = GL.GenBuffer();
-            vao = GL.GenVertexArray();
-
-
-            GL.BindVertexArray(vao);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             GL.BufferData(
@@ -42,15 +40,32 @@ namespace Scene.Defaults
                 canvasVerticesPos.Length * sizeof(float),
                 canvasVerticesPos,
                 BufferUsageHint.StaticDraw);
+        }
 
+        private void initVAO()
+        {
+            vao = GL.GenVertexArray();
 
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+            GL.BindVertexArray(vao);
+            GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 0, 0);
             GL.BindVertexArray(0);
+        }
 
+        private void initShaderProgram()
+        {
             var vertexShader = new VertexShader(File.ReadAllText(@"Resources\Shaders\VertexShader.glsl"));
             var fragmentShader = new FragmentShader(File.ReadAllText(@"Resources\Shaders\FragmentShader.glsl"));
 
             shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
+        }
+
+        public VoxelGrid()
+        {            
+            initVBO();
+            initVAO();
+            initShaderProgram();
         }
 
         override public void Draw(Camera camera) { 
@@ -63,9 +78,7 @@ namespace Scene.Defaults
                 camera.Transform.Position.GetAbsolutePosition());
 
             GL.BindVertexArray(vao);
-            GL.EnableVertexAttribArray(0);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-            GL.DisableVertexAttribArray(0);
             GL.BindVertexArray(0);
         }
     }
