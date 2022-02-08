@@ -1,5 +1,5 @@
-﻿using System;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
+using System;
 
 namespace Scene.Transform
 {
@@ -88,11 +88,12 @@ namespace Scene.Transform
 
         /// <summary>
         /// Получает абсолютное положение объекта.
+        /// ПРЕДУПРЕЖДЕНИЕ: Временно возвращает локальную позицию
         /// </summary>
         /// <returns>Положение объекта (x, y, z).</returns>
         public Vector3 GetAbsolutePosition()
         {
-            throw new NotImplementedException();
+            return position;
         }
 
         /// <summary>
@@ -150,11 +151,12 @@ namespace Scene.Transform
 
         /// <summary>
         /// Получает абсолютное вращение объекта.
+        /// ПРЕДУПРЕЖДЕНИЕ: Временно возвращает локальное вращение
         /// </summary>
         /// <returns>Последовательное вращение объекта вокруг осей (x, y, z).</returns>
         public Vector3 GetAbsoluteRotation()
         {
-            throw new NotImplementedException();
+            return rotation;
         }
 
         /// <summary>
@@ -209,11 +211,12 @@ namespace Scene.Transform
 
         /// <summary>
         /// Получает абсолютный размер объекта.
+        /// ПРЕДУПРЕЖДЕНИЕ: Временно возвращает локальный размер
         /// </summary>
         /// <returns>Размер объекта по каждой из осей (x, y, z).</returns>
         public Vector3 GetAbsoluteScale()
         {
-            throw new NotImplementedException();
+            return scale;
         }
 
         /// <summary>
