@@ -1,6 +1,16 @@
-﻿#version 330
+﻿#version 430 core
 
+//uniform sampler3D grid;
 uniform vec3 cameraPosition;
+
+layout(std430, binding = 3) buffer grid
+{
+    int data_SSBO[];
+};
+
+in vec2 pos;
+out vec4 outputColor;
+
 
 float hit_sphere(vec3 ray_start_position, vec3 ray_direction) {
 	vec3 sphere_center = vec3(0, 0, 3);
@@ -17,9 +27,6 @@ float hit_sphere(vec3 ray_start_position, vec3 ray_direction) {
 	}
 }
 
-out vec4 outputColor;
-in vec2 pos;
-
 void main()
 {
 	vec2 newPos = pos / 0.9;
@@ -28,12 +35,16 @@ void main()
 	float farScale = 2;
 
 	vec3 diretction = vec3(newPos * farScale - newPos, farPlaneDistance - nearPlaneDistance);
+//	vec4 fe = texture(grid, vec3(0,0,0));
+	outputColor = vec4(data_SSBO[0], 0, 1, 1);// vec4(x.x,1,1,1);
+//	outputColor = vec4(1,fe.x,0,0);
 
-	float dist = hit_sphere(cameraPosition, diretction);
-	if (dist > 0){
-		outputColor = vec4(dist, 0, 0, 1);
-	}
-	else{
-		outputColor = vec4(abs(newPos), 0, 1);
-	}
+//
+//	float dist = hit_sphere(cameraPosition, diretction);
+//	if (dist > 0){
+//		outputColor = vec4(dist, 0, 0, 1);
+//	}
+//	else{
+//		outputColor = vec4(abs(newPos), 0, 1);
+//	}
 }

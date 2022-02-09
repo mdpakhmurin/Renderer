@@ -76,6 +76,9 @@ namespace Scene.Defaults
             var fragmentShader = new FragmentShader(File.ReadAllText(@"Resources\Shaders\FragmentShader.glsl"));
 
             shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
+
+            var grid = new Grid(shaderProgram);
+            grid.Generate();
         }
 
         public VoxelGrid()
@@ -90,7 +93,6 @@ namespace Scene.Defaults
             base.Draw(camera);
 
             shaderProgram.Use();
-
             GL.Uniform3(
                 shaderProgram.GetUniform("cameraPosition"),
                 camera.Transform.Position.GetAbsolutePosition());
@@ -98,6 +100,32 @@ namespace Scene.Defaults
             GL.BindVertexArray(vao);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
             GL.BindVertexArray(0);
+        }
+    }
+
+    public class Grid {
+        private ShaderProgram shaderProgram;
+
+        public Grid (ShaderProgram shaderProgram){
+            this.shaderProgram = shaderProgram;
+        }
+
+        public void Generate()
+        {
+            shaderProgram.Use();
+
+            int ssbo = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ShaderStorageBuffer, ssbo);
+
+            int[] voxels = new int[3 * 3 * 3 * 3];
+            for (int i = 0; i < voxels.Length; i++)
+            {
+                voxels[i] = 1;
+            }
+            GL.BufferData(BufferTarget.ShaderStorageBuffer, sizeof(int) * voxels.Length, voxels, BufferUsageHint.DynamicDraw);
+            GL.BindBuffersBase(BufferRangeTarget.ShaderStorageBuffer, 3, 1, ref ssbo);
+            GL.BindBuffer(BufferTarget.ShaderStorageBuffer, 0);
+            Console.WriteLine(GL.GetError());
         }
     }
 }
