@@ -22,6 +22,13 @@ namespace Scene.Defaults
 
         private void initVBO()
         {
+            // Координаты углов "экрана" отрисовки
+            //
+            // Экран - 3х мерная плоскость (состояющая из двух треугольников)
+            // на которой будет происходить отрисовка
+            // 
+            // Каждая строчка - координаты x,y соответствующего угла
+            // (координата z устанавливается в 0 в шейдере)
             float[] canvasVerticesPos =
             {
                 -0.9f, -0.9f,
@@ -32,9 +39,13 @@ namespace Scene.Defaults
                 -0.9f, -0.9f
             };
 
+
             vbo = GL.GenBuffer();
 
+            // Установка активного VBO для всей программы
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+
+            // Загрузка данных в VBO
             GL.BufferData(
                 BufferTarget.ArrayBuffer,
                 canvasVerticesPos.Length * sizeof(float),
@@ -44,11 +55,17 @@ namespace Scene.Defaults
 
         private void initVAO()
         {
+            // Установка активного VBO
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+
             vao = GL.GenVertexArray();
 
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+            // Установка активного VAO
             GL.BindVertexArray(vao);
+            
+            // Указывает активный массив атрибутов вершин
             GL.EnableVertexAttribArray(0);
+            // Связывает активный VBO с активным индексом VAO
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 0, 0);
             GL.BindVertexArray(0);
         }
@@ -62,13 +79,14 @@ namespace Scene.Defaults
         }
 
         public VoxelGrid()
-        {            
+        {
             initVBO();
             initVAO();
             initShaderProgram();
         }
 
-        override public void Draw(Camera camera) { 
+        override public void Draw(Camera camera)
+        {
             base.Draw(camera);
 
             shaderProgram.Use();
