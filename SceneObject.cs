@@ -5,13 +5,13 @@
     /// Каждый объект сцены должен расширяется единственной ответственностью 
     /// и представлять собой узел иерархии сцены.
     /// </summary>
-    public class SceneObject
+    public partial class SceneObject
     {
         // Имя объекта.
         private string name;
 
         // Трансформации объекта
-        private Transform transform;
+        private _Transform transform;
 
         // Иерархия объекта (родитель/дочерние объекты).
         private Hierarchy.Hierarchy hierarchy;
@@ -20,7 +20,7 @@
         {
             this.name = name;
             hierarchy = new Hierarchy.Hierarchy(this);
-            transform = new Transform(this);
+            transform = new _Transform(this);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@
         /// <summary>
         /// Трансформации объекта.
         /// </summary>
-        public Transform Transform
+        public _Transform Transform
         {
             get { return transform; }
         }

@@ -3,68 +3,71 @@ using System;
 
 namespace Scene.SceneObject
 {
-    public partial class Transform
+    public partial class SceneObject
     {
-        /// <summary>
-        /// Положение объекта на сцене.
-        /// </summary>
-        public class _Position
+        public partial class _Transform
         {
-            // Все трансформации объекта.
-            private Transform transform;
-
-            // Позиция объекта, относительно родителя
-            Vector3 position;
-
-            public _Position(Transform transform)
-            {
-                this.transform = transform;
-                position = new Vector3(0, 0, 0);
-            }
-
             /// <summary>
-            /// Все трансформации объекта.
+            /// Положение объекта на сцене.
             /// </summary>
-            public Transform Transform
+            public class _Position
             {
-                get { return transform; }
-            }
+                // Все трансформации объекта.
+                private _Transform transform;
 
-            /// <summary>
-            /// Получает абсолютное положение объекта.
-            /// ПРЕДУПРЕЖДЕНИЕ: Временно возвращает локальную позицию
-            /// </summary>
-            /// <returns>Положение объекта (x, y, z).</returns>
-            public Vector3 GetAbsolutePosition()
-            {
-                return position;
-            }
+                // Позиция объекта, относительно родителя
+                Vector3 position;
 
-            /// <summary>
-            /// Устанавливает абсолютное положение объекта.
-            /// </summary>
-            /// <param name="position">Положение объекта (x, y, z).</param>
-            public void SetAbsolutePosition(Vector3 position)
-            {
-                throw new NotImplementedException();
-            }
+                public _Position(_Transform transform)
+                {
+                    this.transform = transform;
+                    position = new Vector3(0, 0, 0);
+                }
 
-            /// <summary>
-            /// Получает положение объекта, относительно его родителя.
-            /// </summary>
-            /// <returns>Положение объекта (x, y, z).</returns>
-            public Vector3 GetLocalPosition()
-            {
-                return position;
-            }
+                /// <summary>
+                /// Все трансформации объекта.
+                /// </summary>
+                public _Transform Transform
+                {
+                    get { return transform; }
+                }
 
-            /// <summary>
-            /// Устанавливает получает положение объекта, относительно его родителя.
-            /// </summary>
-            /// <param name="position">Положение объекта (x, y, z).</param>
-            public void SetLocalPosition(Vector3 position)
-            {
-                this.position = position;
+                /// <summary>
+                /// Получает абсолютное положение объекта.
+                /// ПРЕДУПРЕЖДЕНИЕ: Временно возвращает локальную позицию
+                /// </summary>
+                /// <returns>Положение объекта (x, y, z).</returns>
+                public Vector3 GetAbsolutePosition()
+                {
+                    return position;
+                }
+
+                /// <summary>
+                /// Устанавливает абсолютное положение объекта.
+                /// </summary>
+                /// <param name="position">Положение объекта (x, y, z).</param>
+                public void SetAbsolutePosition(Vector3 position)
+                {
+                    throw new NotImplementedException();
+                }
+
+                /// <summary>
+                /// Получает положение объекта, относительно его родителя.
+                /// </summary>
+                /// <returns>Положение объекта (x, y, z).</returns>
+                public Vector3 GetLocalPosition()
+                {
+                    return position;
+                }
+
+                /// <summary>
+                /// Устанавливает получает положение объекта, относительно его родителя.
+                /// </summary>
+                /// <param name="position">Положение объекта (x, y, z).</param>
+                public void SetLocalPosition(Vector3 position)
+                {
+                    this.position = position;
+                }
             }
         }
     }
