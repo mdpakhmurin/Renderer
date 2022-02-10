@@ -1,7 +1,7 @@
 ﻿using OpenTK.Mathematics;
 using System;
 
-namespace Scene.Transform
+namespace Scene.SceneObject
 {
     public partial class Transform
     {

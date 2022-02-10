@@ -1,4 +1,4 @@
-﻿namespace Scene.Transform
+﻿namespace Scene.SceneObject
 {
     /// <summary>
     /// Трансформации объетка.
@@ -6,7 +6,7 @@
     public partial class Transform
     {
         // текущий объект (к которому привязана трансформация).
-        private SceneObject.SceneObject sceneObject;
+        private SceneObject sceneObject;
 
         // Позиция объекта.
         private _Position position;
@@ -17,7 +17,7 @@
         // Размер объекта.
         private _Scale scale;
 
-        public Transform(SceneObject.SceneObject sceneObject)
+        public Transform(SceneObject sceneObject)
         {
             this.sceneObject = sceneObject;
 
@@ -29,7 +29,7 @@
         /// <summary>
         /// Текущий объект на сцене
         /// </summary>
-        public SceneObject.SceneObject SceneObject
+        public SceneObject SceneObject
         {
             get { return sceneObject; }
         }

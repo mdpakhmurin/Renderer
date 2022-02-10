@@ -11,7 +11,7 @@
         private string name;
 
         // Трансформации объекта
-        private Transform.Transform transform;
+        private Transform transform;
 
         // Иерархия объекта (родитель/дочерние объекты).
         private Hierarchy.Hierarchy hierarchy;
@@ -20,7 +20,7 @@
         {
             this.name = name;
             hierarchy = new Hierarchy.Hierarchy(this);
-            transform = new Transform.Transform(this);
+            transform = new Transform(this);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@
         /// <summary>
         /// Трансформации объекта.
         /// </summary>
-        public Transform.Transform Transform
+        public Transform Transform
         {
             get { return transform; }
         }
