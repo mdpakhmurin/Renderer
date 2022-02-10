@@ -14,12 +14,12 @@
         private _Transform transform;
 
         // Иерархия объекта (родитель/дочерние объекты).
-        private Hierarchy.Hierarchy hierarchy;
+        private _Hierarchy hierarchy;
 
         public SceneObject(string name = "new object")
         {
             this.name = name;
-            hierarchy = new Hierarchy.Hierarchy(this);
+            hierarchy = new _Hierarchy(this);
             transform = new _Transform(this);
         }
 
@@ -43,7 +43,7 @@
         /// <summary>
         /// Иерархия объекта (родитель/дочерние объекты). 
         /// </summary>
-        public Hierarchy.Hierarchy Hierarchy
+        public _Hierarchy Hierarchy
         {
             get { return hierarchy; }
         }
