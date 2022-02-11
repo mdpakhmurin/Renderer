@@ -32,41 +32,10 @@ namespace Scene.SceneObject
                     get { return transform; }
                 }
 
-                /// <summary>
-                /// Получает абсолютное положение объекта.
-                /// ПРЕДУПРЕЖДЕНИЕ: Временно возвращает локальную позицию
-                /// </summary>
-                /// <returns>Положение объекта (x, y, z).</returns>
-                public Vector3 GetAbsolutePosition()
+                public Vector3 Position
                 {
-                    return position;
-                }
-
-                /// <summary>
-                /// Устанавливает абсолютное положение объекта.
-                /// </summary>
-                /// <param name="position">Положение объекта (x, y, z).</param>
-                public void SetAbsolutePosition(Vector3 position)
-                {
-                    throw new NotImplementedException();
-                }
-
-                /// <summary>
-                /// Получает положение объекта, относительно его родителя.
-                /// </summary>
-                /// <returns>Положение объекта (x, y, z).</returns>
-                public Vector3 GetLocalPosition()
-                {
-                    return position;
-                }
-
-                /// <summary>
-                /// Устанавливает получает положение объекта, относительно его родителя.
-                /// </summary>
-                /// <param name="position">Положение объекта (x, y, z).</param>
-                public void SetLocalPosition(Vector3 position)
-                {
-                    this.position = position;
+                    get { return position; }
+                    set { position = value; }
                 }
             }
         }

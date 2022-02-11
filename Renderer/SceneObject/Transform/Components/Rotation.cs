@@ -15,13 +15,13 @@ namespace Scene.SceneObject
                 // Все трансформации объекта.
                 private _Transform transform;
 
-                // Последовательное вращение объекта, относительно родителя.
-                private Vector3 rotation;
+                // Вращение объекта.
+                private Quaternion rotation;
 
                 public _Rotation(_Transform transform)
                 {
                     this.transform = transform;
-                    rotation = new Vector3(0, 0, 0);
+                    rotation = new Quaternion();
                 }
 
                 /// <summary>
@@ -32,41 +32,27 @@ namespace Scene.SceneObject
                     get { return transform; }
                 }
 
-                /// <summary>
-                /// Получает абсолютное вращение объекта.
-                /// ПРЕДУПРЕЖДЕНИЕ: Временно возвращает локальное вращение
-                /// </summary>
-                /// <returns>Последовательное вращение объекта вокруг осей (x, y, z).</returns>
-                public Vector3 GetAbsoluteRotation()
+                public Quaternion Rotation
                 {
-                    return rotation;
+                    get { return rotation; }
+                    set { rotation = value; }
                 }
 
-                /// <summary>
-                /// Устанавливает абсолютное вращение объекта.
-                /// </summary>
-                /// <param name="rotation">Последовательное вращение объекта вокруг осей (x, y, z).</param>
-                public void SetAbsoluteRotation(Vector3 rotation)
-                {
-                    throw new NotImplementedException();
+                public Matrix3 Matrix{
+                    get { return Matrix3.CreateFromQuaternion(rotation); }
+                    set { rotation = Quaternion.FromMatrix(value); }
                 }
 
-                /// <summary>
-                /// Получает вращение объекта, относительно его родителя.
-                /// </summary>
-                /// <returns>Последовательное вращение объекта вокруг осей (x, y, z).</returns>
-                public Vector3 GetLocalRotation()
+                public Vector3 EulerAngles
                 {
-                    return rotation;
+                    get { return rotation.ToEulerAngles(); }
+                    set { rotation = Quaternion.FromEulerAngles(value); }
                 }
 
-                /// <summary>
-                /// Последовательное вращение объекта вокруг осей(x, y, z).
-                /// </summary>
-                /// <param name="rotation">Последовательное вращение объекта вокруг осей (x, y, z).</param>
-                public void SetLocalRotation(Vector3 rotation)
+                public Vector4 AxisAngle
                 {
-                    this.rotation = rotation;
+                    get { return rotation.ToAxisAngle(); }
+                    set { rotation = Quaternion.FromAxisAngle(value.Xyz, value.W); }
                 }
             }
         }

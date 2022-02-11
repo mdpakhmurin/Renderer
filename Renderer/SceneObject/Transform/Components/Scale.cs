@@ -29,41 +29,10 @@ namespace Scene.SceneObject
                     get { return transform; }
                 }
 
-                /// <summary>
-                /// Получает абсолютный размер объекта.
-                /// ПРЕДУПРЕЖДЕНИЕ: Временно возвращает локальный размер
-                /// </summary>
-                /// <returns>Размер объекта по каждой из осей (x, y, z).</returns>
-                public Vector3 GetAbsoluteScale()
+                public Vector3 Scale
                 {
-                    return scale;
-                }
-
-                /// <summary>
-                /// Устанавливает абсолютный размер объекта.
-                /// </summary>
-                /// <param name="scale">Размер объекта по каждой из осей (x, y, z).</param>
-                public void SetAbsoluteScale(Vector3 scale)
-                {
-                    throw new NotImplementedException();
-                }
-
-                /// <summary>
-                /// Получает размер объекта, относительно его родителя
-                /// </summary>
-                /// <returns>Размер объекта по каждой из осей (x, y, z).</returns>
-                public Vector3 GetLocalScale()
-                {
-                    return scale;
-                }
-
-                /// <summary>
-                /// Устанавливает размер объекта, относительно его родителя
-                /// </summary>
-                /// <param name="scale">Размер объекта по каждой из осей (x, y, z).</param>
-                public void SetLocalScale(Vector3 scale)
-                {
-                    this.scale = scale;
+                    get { return scale; }
+                    set { scale = value; }
                 }
             }
         }
