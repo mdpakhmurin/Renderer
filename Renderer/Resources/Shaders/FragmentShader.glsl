@@ -1,7 +1,6 @@
 ﻿#version 430 core
 
-//uniform sampler3D grid;
-uniform vec3 cameraPosition;
+uniform mat4 camera;
 
 layout(std430, binding = 3) buffer grid
 {
@@ -23,14 +22,15 @@ float nearestDistanceToBox(vec3 point){
 }
 
 float rayMarching(vec3 startPoint, vec3 direction){
+	float dist = 0;
 	for (int i = 0; i < 10; i++){
-		float nearestDist = nearestDistanceToBox(startPoint);
+		float nearestDist = nearestDistanceToBox(startPoint + dist*direction);
 
 		if (nearestDist < 0.1f){
-			return 1;
+			return dist;
 		}
 
-		startPoint += direction * nearestDist;
+		dist += nearestDist;
 	}
 
 	return 0;
@@ -39,6 +39,11 @@ float rayMarching(vec3 startPoint, vec3 direction){
 void main()
 {
 	vec2 newPos = pos / 0.9;
+	vec4 cameraPos = vec4(0, 0, -10, 0);
 
-	outputColor = vec4(rayMarching(vec3(newPos*3,-10), vec3(0,0,1))*data_SSBO[0], 1);
+	vec3 rayPos = vec3(newPos*10, 0);
+	rayPos = (vec4(rayPos, 1) * camera).xyz;
+
+	float nearDist = rayMarching(rayPos, vec3(0,0,1));
+	outputColor = vec4(nearDist*data_SSBO[0], 1);
 }

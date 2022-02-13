@@ -8,7 +8,7 @@ using Scene.Utilities;
 
 namespace Scene.Defaults
 {
-    public class DrawableObject
+    public class DrawableObject : SceneObject.SceneObject
     {
         virtual public void Draw(Camera camera) { }
     }
@@ -132,10 +132,45 @@ namespace Scene.Defaults
             {
                 voxelGrid.shaderProgram.Use();
 
-                // Установка позиции камеры,
-                GL.Uniform3(
-                    voxelGrid.shaderProgram.GetUniform("cameraPosition"),
-                    camera.Transform.Position.GetAbsolutePosition());
+                camera.Transform.Position.Position = new Vector3(0, 0, -5);
+
+                var cameraPos = new Matrix4(
+                    new Vector4(1, 0, 0, camera.Transform.Position.Position.X),
+                    new Vector4(0, 1, 0, camera.Transform.Position.Position.Y),
+                    new Vector4(0, 0, 1, camera.Transform.Position.Position.Z),
+                    new Vector4(0, 0, 0, 1)
+                );
+
+                var cameraRot = Matrix4.CreateFromQuaternion(camera.Transform.Rotation.Quaternion);
+
+                var cameraScale = new Matrix4(
+                    new Vector4(camera.Transform.Scacle.Scale.X, 0, 0, 0),
+                    new Vector4(0, camera.Transform.Scacle.Scale.Y, 0, 0),
+                    new Vector4(0, 0, camera.Transform.Scacle.Scale.Z, 0),
+                    new Vector4(0, 0, 0, 1)
+                );
+
+                var objPos = new Matrix4(
+                    new Vector4(1, 0, 0, voxelGrid.Transform.Position.Position.X),
+                    new Vector4(0, 1, 0, voxelGrid.Transform.Position.Position.Y),
+                    new Vector4(0, 0, 1, voxelGrid.Transform.Position.Position.Z),
+                    new Vector4(0, 0, 0, 1)
+                );
+
+                var objScale = new Matrix4(
+                    new Vector4(voxelGrid.Transform.Scacle.Scale.X, 0, 0, 0),
+                    new Vector4(0, voxelGrid.Transform.Scacle.Scale.Y, 0, 0),
+                    new Vector4(0, 0, voxelGrid.Transform.Scacle.Scale.Z, 0),
+                    new Vector4(0, 0, 0, 1)
+                );
+
+                var objRot = Matrix4.CreateFromQuaternion(voxelGrid.Transform.Rotation.Quaternion);
+
+                var resultMat = cameraScale * cameraRot * cameraPos * objScale * objRot * objPos;
+
+                GL.UniformMatrix4(voxelGrid.shaderProgram.GetUniform("camera"),
+                    false,
+                    ref resultMat);
 
                 // Использование VAO для отрисовки треугольников.
                 // (2 треугольника образующих прямоугольник экрана отрисовки).
@@ -164,10 +199,10 @@ namespace Scene.Defaults
                 int ssbo = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ShaderStorageBuffer, ssbo);
 
-                int[] voxels = new int[3 * 3 * 3 * 3];
-                for (int i = 0; i < voxels.Length; i++)
+                Vector3[] voxels = new Vector3[3 * 3 * 3];
+                for (int i = 0; i < voxels.GetLength(0); i++)
                 {
-                    voxels[i] = 1;
+                    voxels[i] = new Vector3(0, 0.7f, 0);
                 }
                 GL.BufferData(BufferTarget.ShaderStorageBuffer, sizeof(int) * voxels.Length, voxels, BufferUsageHint.DynamicDraw);
                 GL.BindBuffersBase(BufferRangeTarget.ShaderStorageBuffer, 3, 1, ref ssbo);
