@@ -133,40 +133,16 @@ namespace Scene.Defaults
                 voxelGrid.shaderProgram.Use();
 
                 camera.Transform.Position.Position = new Vector3(0, 0, -5);
+                voxelGrid.Transform.Position.Position = new Vector3(0, 4, 0);
 
-                var cameraPos = new Matrix4(
-                    new Vector4(1, 0, 0, camera.Transform.Position.Position.X),
-                    new Vector4(0, 1, 0, camera.Transform.Position.Position.Y),
-                    new Vector4(0, 0, 1, camera.Transform.Position.Position.Z),
-                    new Vector4(0, 0, 0, 1)
-                );
+                var resultMat =
+                    voxelGrid.Transform.Position.Matrix.Inverted() *
+                    voxelGrid.Transform.Rotation.Matrix.Inverted() *
+                    voxelGrid.Transform.Scale.Matrix.Inverted() *
+                    camera.Transform.Position.Matrix * 
+                    camera.Transform.Rotation.Matrix * 
+                    camera.Transform.Scale.Matrix;
 
-                var cameraRot = Matrix4.CreateFromQuaternion(camera.Transform.Rotation.Quaternion);
-
-                var cameraScale = new Matrix4(
-                    new Vector4(camera.Transform.Scacle.Scale.X, 0, 0, 0),
-                    new Vector4(0, camera.Transform.Scacle.Scale.Y, 0, 0),
-                    new Vector4(0, 0, camera.Transform.Scacle.Scale.Z, 0),
-                    new Vector4(0, 0, 0, 1)
-                );
-
-                var objPos = new Matrix4(
-                    new Vector4(1, 0, 0, voxelGrid.Transform.Position.Position.X),
-                    new Vector4(0, 1, 0, voxelGrid.Transform.Position.Position.Y),
-                    new Vector4(0, 0, 1, voxelGrid.Transform.Position.Position.Z),
-                    new Vector4(0, 0, 0, 1)
-                );
-
-                var objScale = new Matrix4(
-                    new Vector4(voxelGrid.Transform.Scacle.Scale.X, 0, 0, 0),
-                    new Vector4(0, voxelGrid.Transform.Scacle.Scale.Y, 0, 0),
-                    new Vector4(0, 0, voxelGrid.Transform.Scacle.Scale.Z, 0),
-                    new Vector4(0, 0, 0, 1)
-                );
-
-                var objRot = Matrix4.CreateFromQuaternion(voxelGrid.Transform.Rotation.Quaternion);
-
-                var resultMat = cameraScale * cameraRot * cameraPos * objScale * objRot * objPos;
 
                 GL.UniformMatrix4(voxelGrid.shaderProgram.GetUniform("camera"),
                     false,

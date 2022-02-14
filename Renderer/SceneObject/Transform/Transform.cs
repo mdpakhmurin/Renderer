@@ -55,7 +55,7 @@
             /// <summary>
             /// Размер объекта.
             /// </summary>
-            public _Scale Scacle
+            public _Scale Scale
             {
                 get { return scale; }
             }

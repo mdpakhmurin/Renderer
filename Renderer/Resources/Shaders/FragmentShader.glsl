@@ -42,7 +42,7 @@ void main()
 	vec4 cameraPos = vec4(0, 0, -10, 0);
 
 	vec3 rayPos = vec3(newPos*10, 0);
-	rayPos = (vec4(rayPos, 1) * camera).xyz;
+	rayPos = (camera * vec4(rayPos, 1)).xyz;
 
 	float nearDist = rayMarching(rayPos, vec3(0,0,1));
 	outputColor = vec4(nearDist*data_SSBO[0], 1);
