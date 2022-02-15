@@ -25,7 +25,7 @@ float rayMarching(vec3 startPoint, vec3 direction){
 	float dist = 0;
 	for (int i = 0; i < 10; i++){
 		float nearestDist = nearestDistanceToBox(startPoint + dist*direction);
-
+		
 		if (nearestDist < 0.1f){
 			return dist;
 		}
@@ -41,9 +41,12 @@ void main()
 	vec2 newPos = pos / 0.9;
 	vec4 cameraPos = vec4(0, 0, -10, 0);
 
-	vec3 rayPos = vec3(newPos*10, 0);
-	rayPos = (camera * vec4(rayPos, 1)).xyz;
+	vec3 startPoint = vec3(newPos*10, 0);
+	vec3 endPoint = startPoint + vec3(0, 0, -1);
 
-	float nearDist = rayMarching(rayPos, vec3(0,0,1));
+	startPoint = (camera * vec4(startPoint, 1)).xyz;
+	endPoint = (camera * vec4(endPoint, 1)).xyz;
+
+	float nearDist = rayMarching(startPoint, endPoint - startPoint);
 	outputColor = vec4(nearDist*data_SSBO[0], 1);
 }
