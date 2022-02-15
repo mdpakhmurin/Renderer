@@ -132,14 +132,13 @@ namespace Scene.Defaults
             {
                 voxelGrid.shaderProgram.Use();
 
-                camera.Transform.Position.Position = new Vector3(5, 0, 5);
 
                 var resultMat =
                     voxelGrid.Transform.Position.Matrix.Inverted() *
                     voxelGrid.Transform.Rotation.Matrix.Inverted() *
                     voxelGrid.Transform.Scale.Matrix.Inverted() *
-                    camera.Transform.Position.Matrix * 
-                    camera.Transform.Rotation.Matrix * 
+                    camera.Transform.Position.Matrix *
+                    camera.Transform.Rotation.Matrix *
                     camera.Transform.Scale.Matrix;
 
 
@@ -176,9 +175,11 @@ namespace Scene.Defaults
                 int ssbo = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ShaderStorageBuffer, ssbo);
 
-                Vector3[] voxels = new Vector3[3 * 3 * 3 + 1];
-                voxels[0] = new Vector3(3, 3, 3);
-                for (int i = 1; i < voxels.Length; i++)
+                GL.Uniform3(voxelGrid.shaderProgram.GetUniform("voxelGridSize"), 10, 10, 10);
+
+                Vector3[] voxels = new Vector3[100 * 100 * 100];
+                //voxels[0] = new Vector3(3, 3, 3);
+                for (int i = 0; i < voxels.Length; i++)
                 {
                     voxels[i] = new Vector3((float) rand.NextDouble(), 0.7f, (float) rand.NextDouble());
                 }
