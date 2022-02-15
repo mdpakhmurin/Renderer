@@ -24,7 +24,10 @@ namespace Render
 
             voxelGrid = new VoxelGrid();
             camera = new Camera();
-            camera.Transform.Position.Position = new Vector3(0, -0.5f, -10);
+            camera.Transform.Position.Position = new Vector3(0, 0, 30);
+
+            voxelGrid.Data.GenerateGrid(new Vector3i(3, 3, 3));
+            voxelGrid.Data.SetVoxel(new Vector3i(0, 0, 0), new Vector3(1, 1, 1));
 
             GL.ClearColor(1, 1, 1, 1);
         }
@@ -35,8 +38,7 @@ namespace Render
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
             voxelGrid.Draw(camera);
-            //camera.Transform.Position.Position = camera.Transform.Position.Position + new Vector3(0, 0.01f, 0);
-            //voxelGrid.Transform.Rotation.EulerAngles = voxelGrid.Transform.Rotation.EulerAngles + new Vector3(0,0,0.01f);
+            camera.Transform.Rotation.Quaternion *= Quaternion.FromEulerAngles(0.01f, 0.01f, 0);
 
             SwapBuffers();
         }

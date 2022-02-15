@@ -16,14 +16,13 @@ namespace Scene.Defaults
     public partial class VoxelGrid : DrawableObject
     {
         private ShaderProgram shaderProgram;
-        private Drawer drawer;
-        private Data data;
+        private _Drawer drawer;
+        private _Data data;
 
         public VoxelGrid()
         {
-            drawer = new Drawer(this);
-            data = new Data(this);
-            data.GenerateGrid(new Vector3(3,3,3));
+            drawer = new _Drawer(this);
+            data = new _Data(this);
         }
 
         override public void Draw(Camera camera)
@@ -33,17 +32,21 @@ namespace Scene.Defaults
             drawer.Draw(camera);
         }
 
+        public _Data Data
+        {
+            get { return data; }
+        }
     }
 
     public partial class VoxelGrid : DrawableObject
     {
-        private class Drawer
+        private class _Drawer
         {
             private VoxelGrid voxelGrid;
             private int vbo;
             private int vao;
 
-            public Drawer(VoxelGrid voxelGrid)
+            public _Drawer(VoxelGrid voxelGrid)
             {
                 this.voxelGrid = voxelGrid;
                 init();
@@ -157,36 +160,67 @@ namespace Scene.Defaults
     
     public partial class VoxelGrid : DrawableObject
     {
-        private class Data
+        public class _Data
         {
-            private VoxelGrid voxelGrid;
-            private Vector3 size;
+            // Примечание: В шейдерах 430 версии существует выравнивание блоков
+            // данных: например для получения vec3 в шейдере, через ssbo,
+            // в буфер необходимо передать vector4.
 
-            public Data(VoxelGrid voxelGrid)
+            private VoxelGrid voxelGrid;
+            private int ssbo;
+
+            public _Data(VoxelGrid voxelGrid)
             {
                 this.voxelGrid = voxelGrid;
             }
 
-            public void GenerateGrid(Vector3 size)
+            public void GenerateGrid(Vector3i size)
             {
-                Random rand = new Random();
                 voxelGrid.shaderProgram.Use();
 
-                int ssbo = GL.GenBuffer();
+                // Сохранение размера воксельной сетки
+                GL.Uniform3(voxelGrid.shaderProgram.GetUniform("voxelGridSize"), size.X, size.Y, size.Z);
+
+                // Инициализация ssbo
+                GL.DeleteBuffer(ssbo);
+                ssbo = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ShaderStorageBuffer, ssbo);
-
-                GL.Uniform3(voxelGrid.shaderProgram.GetUniform("voxelGridSize"), 10, 10, 10);
-
-                Vector3[] voxels = new Vector3[100 * 100 * 100];
-                //voxels[0] = new Vector3(3, 3, 3);
-                for (int i = 0; i < voxels.Length; i++)
-                {
-                    voxels[i] = new Vector3((float) rand.NextDouble(), 0.7f, (float) rand.NextDouble());
-                }
-                GL.BufferData(BufferTarget.ShaderStorageBuffer, sizeof(int) * voxels.Length, voxels, BufferUsageHint.DynamicDraw);
+                GL.BufferData(BufferTarget.ShaderStorageBuffer, 16 * size.X * size.Y * size.Z, IntPtr.Zero, BufferUsageHint.DynamicDraw);
                 GL.BindBuffersBase(BufferRangeTarget.ShaderStorageBuffer, 3, 1, ref ssbo);
                 GL.BindBuffer(BufferTarget.ShaderStorageBuffer, 0);
-                Console.WriteLine(GL.GetError());
+            }
+
+            public void SetVoxel(Vector3i pos, Vector3 color)
+            {
+                // Получение размера сетки
+                var size = new int[3];
+                GL.GetUniform(voxelGrid.shaderProgram.Id, voxelGrid.shaderProgram.GetUniform("voxelGridSize"), size);
+
+                // Проверка на выход за границы
+                if (pos.X < 0 || pos.X >= size[0] || pos.Y < 0 || pos.Y >= size[1] || pos.Z < 0 || pos.Z >= size[2])
+                    throw new IndexOutOfRangeException("Индекс выходит за границы сетки");
+
+                // Установка данных
+                var id = pos.X + pos.Y * size[0] + pos.Z * size[1] * size[2];
+                GL.NamedBufferSubData(ssbo, new IntPtr(16 * id), 12, ref color);
+            }
+
+            public Vector3 GetVoxel(Vector3i pos)
+            {
+                // Получение размера сетки
+                var size = new int[3];
+                GL.GetUniform(voxelGrid.shaderProgram.Id, voxelGrid.shaderProgram.GetUniform("voxelGridSize"), size);
+
+                // Проверка на выход за границы
+                if (pos.X < 0 || pos.X >= size[0] || pos.Y < 0 || pos.Y >= size[1] || pos.Z < 0 || pos.Z >= size[2])
+                    throw new IndexOutOfRangeException("Индекс выходит за границы сетки");
+
+                // Получение данных
+                Vector3 color = new Vector3(0, 0, 0);
+                var id = pos.X + pos.Y * size[0] + pos.Z * size[1] * size[2];
+                GL.GetNamedBufferSubData(ssbo, new IntPtr(16 * id), 12, ref color);
+
+                return color;
             }
         }
     }
