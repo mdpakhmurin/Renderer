@@ -67,12 +67,12 @@ namespace Scene.Defaults
                 // (координата z устанавливается в 0 в шейдере)
                 float[] canvasVerticesPos =
                 {
-                    -0.9f, -0.9f,
-                     0.9f, -0.9f,
-                     0.9f,  0.9f,
-                     0.9f,  0.9f,
-                    -0.9f,  0.9f,
-                    -0.9f, -0.9f
+                    -1, -1f,
+                     1, -1f,
+                     1,  1f,
+                     1,  1f,
+                    -1,  1f,
+                    -1, -1f
                 };
 
 
@@ -135,19 +135,26 @@ namespace Scene.Defaults
             {
                 voxelGrid.shaderProgram.Use();
 
-
+                // Матрица вида
                 var resultMat =
+                    camera.Transform.Rotation.Matrix *
+                    camera.Transform.Position.Matrix *
+                    camera.Transform.Scale.Matrix *
                     voxelGrid.Transform.Position.Matrix.Inverted() *
                     voxelGrid.Transform.Rotation.Matrix.Inverted() *
-                    voxelGrid.Transform.Scale.Matrix.Inverted() *
-                    camera.Transform.Position.Matrix *
-                    camera.Transform.Rotation.Matrix *
-                    camera.Transform.Scale.Matrix;
+                    voxelGrid.Transform.Scale.Matrix.Inverted();
 
-
-                GL.UniformMatrix4(voxelGrid.shaderProgram.GetUniform("camera"),
+                GL.UniformMatrix4(voxelGrid.shaderProgram.GetUniform("cameraView"),
                     false,
                     ref resultMat);
+
+                // Параметры проекции камеры
+                GL.Uniform2(voxelGrid.shaderProgram.GetUniform("cameraSize"), new Vector2(camera.Width, camera.Height));
+                GL.Uniform2(voxelGrid.shaderProgram.GetUniform("cameraPlaneDist"), new Vector2(camera.Near, camera.Far));
+                if (camera.Type == Camera.CameraType.Perspective)
+                    GL.Uniform1(voxelGrid.shaderProgram.GetUniform("cameraIsPersp"), 1);
+                else
+                    GL.Uniform1(voxelGrid.shaderProgram.GetUniform("cameraIsPersp"), 0);
 
                 // Использование VAO для отрисовки треугольников.
                 // (2 треугольника образующих прямоугольник экрана отрисовки).
@@ -165,7 +172,6 @@ namespace Scene.Defaults
             // Примечание: В шейдерах 430 версии существует выравнивание блоков
             // данных: например для получения vec3 в шейдере, через ssbo,
             // в буфер необходимо передать vector4.
-
             private VoxelGrid voxelGrid;
             private int ssbo;
 
@@ -180,7 +186,7 @@ namespace Scene.Defaults
 
                 // Сохранение размера воксельной сетки
                 GL.Uniform3(voxelGrid.shaderProgram.GetUniform("voxelGridSize"), size.X, size.Y, size.Z);
-
+                
                 // Инициализация ssbo
                 GL.DeleteBuffer(ssbo);
                 ssbo = GL.GenBuffer();
@@ -221,6 +227,17 @@ namespace Scene.Defaults
                 GL.GetNamedBufferSubData(ssbo, new IntPtr(16 * id), 12, ref color);
 
                 return color;
+            }
+
+            public Vector3i Size
+            {
+                get
+                {
+                    var size = new int[3];
+                    GL.GetUniform(voxelGrid.shaderProgram.Id, voxelGrid.shaderProgram.GetUniform("voxelGridSize"), size);
+
+                    return new Vector3i(size[0], size[1], size[2]);
+                }
             }
         }
     }

@@ -12,13 +12,13 @@ namespace Scene.Defaults
         }
 
         public Camera(string name = "newCamera") : base(name) {
-            Width = 10;
-            Height = 10;
+            Width = 5;
+            Height = 5;
 
-            Far = 1;
-            Near = 100;
+            Far = 100;
+            Near = 1;
 
-            Type = CameraType.Orthographic;
+            Type = CameraType.Perspective;
         }
 
         public float Width { get; set; }

@@ -1,15 +1,21 @@
 ﻿#version 430 core
 
-uniform mat4 camera;
-uniform ivec3 voxelGridSize;
+uniform mat4 cameraView;
 
-layout(std430, binding = 3) buffer grid
+uniform vec2 cameraSize;
+uniform vec2 cameraPlaneDist;
+uniform bool cameraIsPersp;
+
+uniform ivec3 voxelGridSize;
+layout(std430, binding = 3) buffer voxelGrid
 {
     vec3 data_SSBO[];
 };
 
 in vec2 pos;
+
 out vec4 outputColor;
+
 
 float nearestDistanceToBox(vec3 point){
 	vec3 boxSize = vec3(1);
@@ -52,13 +58,16 @@ vec4 rayMarching(vec3 startPoint, vec3 direction){
 
 void main()
 {
-	vec2 newPos = pos / 0.9;
+	vec3 startPoint = vec3(pos, 0);
+	
+	vec3 endPoint;
+	if (cameraIsPersp)
+		endPoint = startPoint + normalize(vec3(pos, -cameraPlaneDist[0]));
+	else
+		endPoint = startPoint + vec3(0, 0, -1);
 
-	vec3 startPoint = vec3(newPos*10, 0);
-	vec3 endPoint = startPoint + vec3(0, 0, -1);
-
-	startPoint = (camera * vec4(startPoint, 1)).xyz;
-	endPoint = (camera * vec4(endPoint, 1)).xyz;
+	startPoint = (cameraView * vec4(startPoint, 1)).xyz;
+	endPoint = (cameraView * vec4(endPoint, 1)).xyz;
 
 	vec4 nearDist = rayMarching(startPoint, endPoint - startPoint);
 	
