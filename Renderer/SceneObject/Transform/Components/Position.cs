@@ -37,14 +37,6 @@ namespace Scene.SceneObject
                     get { return position; }
                     set { position = value; }
                 }
-
-                public Matrix4 Matrix
-                {
-                    get
-                    {
-                        return Matrix4.CreateTranslation(Position);
-                    }
-                }
             }
         }
     }

@@ -34,11 +34,6 @@ namespace Scene.SceneObject
                     get { return scale; }
                     set { scale = value; }
                 }
-
-                public Matrix4 Matrix
-                {
-                    get { return Matrix4.CreateScale(Scale); } 
-                }
             }
         }
     }

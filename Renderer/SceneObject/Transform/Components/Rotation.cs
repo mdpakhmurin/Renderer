@@ -37,22 +37,6 @@ namespace Scene.SceneObject
                     get { return rotation; }
                     set { rotation = value; }
                 }
-
-                public Matrix4 Matrix{
-                    get { return Matrix4.CreateFromQuaternion(rotation); }
-                }
-
-                public Vector3 EulerAngles
-                {
-                    get { return rotation.ToEulerAngles(); }
-                    set { rotation = Quaternion.FromEulerAngles(value); }
-                }
-
-                public Vector4 AxisAngle
-                {
-                    get { return rotation.ToAxisAngle(); }
-                    set { rotation = Quaternion.FromAxisAngle(value.Xyz, value.W); }
-                }
             }
         }
     }

@@ -137,12 +137,12 @@ namespace Scene.Defaults
 
                 // Матрица вида
                 var resultMat =
-                    camera.Transform.Rotation.Matrix *
-                    camera.Transform.Position.Matrix *
-                    camera.Transform.Scale.Matrix *
-                    voxelGrid.Transform.Position.Matrix.Inverted() *
-                    voxelGrid.Transform.Rotation.Matrix.Inverted() *
-                    voxelGrid.Transform.Scale.Matrix.Inverted();
+                    Matrix4.CreateFromQuaternion(camera.Transform.Rotation.Quaternion) *
+                    Matrix4.CreateTranslation(camera.Transform.Position.Position) *
+                    Matrix4.CreateScale(camera.Transform.Scale.Scale) *
+                    Matrix4.CreateTranslation(voxelGrid.Transform.Position.Position).Inverted() *
+                    Matrix4.CreateFromQuaternion(voxelGrid.Transform.Rotation.Quaternion).Inverted() *
+                    Matrix4.CreateScale(voxelGrid.Transform.Scale.Scale).Inverted();
 
                 GL.UniformMatrix4(voxelGrid.shaderProgram.GetUniform("cameraView"),
                     false,
@@ -233,6 +233,7 @@ namespace Scene.Defaults
             {
                 get
                 {
+                    // Получение размера сетки
                     var size = new int[3];
                     GL.GetUniform(voxelGrid.shaderProgram.Id, voxelGrid.shaderProgram.GetUniform("voxelGridSize"), size);
 
