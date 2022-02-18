@@ -104,9 +104,9 @@ namespace Scene.Defaults
 
                 // Матрица вида
                 var resultMat =
+                    Matrix4.CreateScale(camera.Transform.Scale.Scale) *
                     Matrix4.CreateFromQuaternion(camera.Transform.Rotation.Quaternion) *
                     Matrix4.CreateTranslation(camera.Transform.Position.Position) *
-                    Matrix4.CreateScale(camera.Transform.Scale.Scale) *
                     Matrix4.CreateTranslation(voxelGrid.Transform.Position.Position).Inverted() *
                     Matrix4.CreateFromQuaternion(voxelGrid.Transform.Rotation.Quaternion).Inverted() *
                     Matrix4.CreateScale(voxelGrid.Transform.Scale.Scale).Inverted();
