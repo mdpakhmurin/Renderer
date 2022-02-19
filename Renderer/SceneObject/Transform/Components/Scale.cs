@@ -29,10 +29,26 @@ namespace Scene.SceneObject
                     get { return transform; }
                 }
 
-                public Vector3 Scale
+                public Vector3 Local
                 {
                     get { return scale; }
                     set { scale = value; }
+                }
+
+                public Vector3 Global
+                {
+                    get
+                    {
+                        var parent = transform.SceneObject.Hierarchy.Parent;
+                        if (parent is null)
+                        {
+                            return Local;
+                        }
+                        else
+                        {
+                            return parent.transform.Scale.Global * transform.Scale.Local;
+                        }
+                    }
                 }
             }
         }

@@ -104,12 +104,12 @@ namespace Scene.Defaults
 
                 // Матрица вида
                 var resultMat =
-                    Matrix4.CreateScale(camera.Transform.Scale.Scale) *
-                    Matrix4.CreateFromQuaternion(camera.Transform.Rotation.Quaternion) *
-                    Matrix4.CreateTranslation(camera.Transform.Position.Position) *
-                    Matrix4.CreateTranslation(voxelGrid.Transform.Position.Position).Inverted() *
-                    Matrix4.CreateFromQuaternion(voxelGrid.Transform.Rotation.Quaternion).Inverted() *
-                    Matrix4.CreateScale(voxelGrid.Transform.Scale.Scale).Inverted();
+                    Matrix4.CreateScale(camera.Transform.Scale.Global) *
+                    Matrix4.CreateFromQuaternion(camera.Transform.Rotation.Global) *
+                    Matrix4.CreateTranslation(camera.Transform.Position.Global) *
+                    Matrix4.CreateTranslation(voxelGrid.Transform.Position.Global).Inverted() *
+                    Matrix4.CreateFromQuaternion(voxelGrid.Transform.Rotation.Global).Inverted() *
+                    Matrix4.CreateScale(voxelGrid.Transform.Scale.Global).Inverted();
 
                 GL.UniformMatrix4(voxelGrid.shaderProgram.GetUniform("cameraView"),
                     false,

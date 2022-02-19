@@ -21,7 +21,7 @@ namespace Scene.SceneObject
                 public _Rotation(_Transform transform)
                 {
                     this.transform = transform;
-                    rotation = new Quaternion(0, 0, 0);
+                    rotation = new Quaternion(0, 0, 0, 1);
                 }
 
                 /// <summary>
@@ -32,10 +32,26 @@ namespace Scene.SceneObject
                     get { return transform; }
                 }
 
-                public Quaternion Quaternion
+                public Quaternion Local
                 {
                     get { return rotation; }
                     set { rotation = value; }
+                }
+
+                public Quaternion Global
+                {
+                    get
+                    {
+                        var parent = transform.SceneObject.Hierarchy.Parent;
+                        if (parent is null)
+                        {
+                            return Local;
+                        }
+                        else
+                        {
+                            return parent.transform.Rotation.Global * transform.Rotation.Local;
+                        }
+                    }
                 }
             }
         }

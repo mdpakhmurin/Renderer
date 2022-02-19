@@ -32,10 +32,38 @@ namespace Scene.SceneObject
                     get { return transform; }
                 }
 
-                public Vector3 Position
+                public Vector3 Local
                 {
                     get { return position; }
                     set { position = value; }
+                }
+
+                public Vector3 Global
+                {
+                    get
+                    {
+                        var parent = transform.SceneObject.Hierarchy.Parent;
+                        if (parent is null)
+                        {
+                            return Local;
+                        }
+                        else
+                        {
+                            var parentScale = parent.Transform.Scale.Global;
+                            var parentRotation = parent.Transform.Rotation.Global;
+                            var parentPosition = parent.transform.Position.Global;
+
+                            var positionQ = new Quaternion(
+                                parentScale.X * Local.X, 
+                                parentScale.Y * Local.Y,
+                                parentScale.Z * Local.Z, 
+                                0
+                            );
+
+                            var rotatedPos = (parentRotation * positionQ * parentRotation.Inverted()).Xyz;
+                            return parentPosition + rotatedPos;
+                        }
+                    }
                 }
             }
         }
