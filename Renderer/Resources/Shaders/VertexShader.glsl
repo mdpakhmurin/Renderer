@@ -10,5 +10,5 @@ void main(void)
 {
     gl_Position = vec4(inPos, 0.0, 1.0);
 
-    pos = vec2(inPos.x * cameraSize.x, inPos.y * cameraSize.y);
+    pos = vec2(inPos.x * cameraSize.x * 0.5f, inPos.y * cameraSize.y * 0.5f);
 }
