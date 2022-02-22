@@ -15,6 +15,7 @@ namespace Render
         public VoxelGrid voxelGrid;
         public SceneObject voxelGridContainer;
         public Camera camera;
+        bool move = false;
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) :
             base(gameWindowSettings, nativeWindowSettings)
         {
@@ -26,25 +27,29 @@ namespace Render
 
             voxelGrid = new VoxelGrid();
             camera = new Camera();
-            camera.Transform.Position.Local = new Vector3(0, 0, 8);
+            camera.Transform.Position.Local = new Vector3(0, 0, 10);
+            Random rand = new Random();
 
-            voxelGrid.Data.GenerateGrid(new Vector3i(5, 5, 1));
+            voxelGrid.Data.GenerateGrid(new Vector3i(3, 3, 3));
             for (int x = 0; x < 5; x++)
             {
                 for (int y = 0; y < 5; y++)
                 {
-                    voxelGrid.Data.SetVoxel(new Vector3i(x, y, 0), new Vector3(1, 1, 0));
+                    for (int z = 0; z < 5; z++)
+                    {
+                        voxelGrid.Data.SetVoxel(new Vector3i(x, y, z), new Vector3((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble()));
+                    }
                 }
             }
-            voxelGrid.Data.SetVoxel(new Vector3i(1, 1, 0), new Vector3(0, 0, 0));
-            voxelGrid.Data.SetVoxel(new Vector3i(3, 1, 0), new Vector3(0, 0, 0));
-            voxelGrid.Data.SetVoxel(new Vector3i(1, 3, 0), new Vector3(0, 0, 0));
-            voxelGrid.Data.SetVoxel(new Vector3i(2, 3, 0), new Vector3(0, 0, 0));
-            voxelGrid.Data.SetVoxel(new Vector3i(3, 3, 0), new Vector3(0, 0, 0));
+            voxelGrid.Data.SetVoxel(new Vector3i(0, 0, 0), new Vector3(1, 1, 1));
+            voxelGrid.Data.SetVoxel(new Vector3i(1, 0, 0), new Vector3(1, 0, 0));
+            voxelGrid.Data.SetVoxel(new Vector3i(2, 0, 0), new Vector3(0, 1, 0));
+            voxelGrid.Data.SetVoxel(new Vector3i(0, 1, 0), new Vector3(0, 0, 1));
+            voxelGrid.Data.SetVoxel(new Vector3i(2, 2, 2), new Vector3(1, 1, 1));
+
 
             voxelGridContainer = new SceneObject();
             voxelGridContainer.Hierarchy.AddChild(voxelGrid);
-            voxelGrid.Transform.Position.Local = new Vector3(2.5f, 2.5f, 0.5f);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -53,10 +58,59 @@ namespace Render
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
             voxelGrid.Draw(camera);
-            //voxelGridContainer.Transform.Rotation.Local *= new Quaternion(0, 0, 0.1f);
-            voxelGridContainer.Transform.Rotation.Local *= Quaternion.FromEulerAngles(0.01f, 0.01f, 0.01f);
+            voxelGridContainer.Transform.Rotation.Local *= Quaternion.FromEulerAngles(0.005f, 0.005f, 0.005f);
 
             SwapBuffers();
+        }
+
+        protected override void OnKeyDown(KeyboardKeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (e.Key == OpenTK.Windowing.GraphicsLibraryFramework.Keys.W)
+            {
+                var rot = camera.Transform.Rotation.Local;
+                camera.Transform.Position.Local += (rot * new Quaternion(0, 0, 1, 0) * rot.Inverted()).Xyz;
+            }
+            if (e.Key == OpenTK.Windowing.GraphicsLibraryFramework.Keys.S)
+            {
+                var rot = camera.Transform.Rotation.Local;
+                camera.Transform.Position.Local += (rot * new Quaternion(0, 0, -1, 0) * rot.Inverted()).Xyz;
+            }
+            if (e.Key == OpenTK.Windowing.GraphicsLibraryFramework.Keys.A)
+            {
+                var rot = camera.Transform.Rotation.Local;
+                camera.Transform.Position.Local += (rot * new Quaternion(-1, 0, 0, 0) * rot.Inverted()).Xyz;
+            }
+            if (e.Key == OpenTK.Windowing.GraphicsLibraryFramework.Keys.D)
+            {
+                var rot = camera.Transform.Rotation.Local;
+                camera.Transform.Position.Local += (rot * new Quaternion(1, 0, 0, 0) * rot.Inverted()).Xyz;
+            }
+            if (e.Key == OpenTK.Windowing.GraphicsLibraryFramework.Keys.Space)
+            {
+                camera.Transform.Position.Local += new Vector3(0, 1, 0);
+            }
+            if (e.Key == OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftShift)
+            {
+                camera.Transform.Position.Local += new Vector3(0, -1, 0);
+            }
+            if (e.Key == OpenTK.Windowing.GraphicsLibraryFramework.Keys.Left)
+            {
+                camera.Transform.Rotation.Local *= new Quaternion(0, -0.1f,0);
+            }
+            if (e.Key == OpenTK.Windowing.GraphicsLibraryFramework.Keys.Right)
+            {
+                camera.Transform.Rotation.Local *= new Quaternion(0, 0.1f, 0);
+            }
+            if (e.Key == OpenTK.Windowing.GraphicsLibraryFramework.Keys.Up)
+            {
+                camera.Transform.Rotation.Local *= new Quaternion(-0.1f, 0, 0);
+            }
+            if (e.Key == OpenTK.Windowing.GraphicsLibraryFramework.Keys.Down)
+            {
+                camera.Transform.Rotation.Local *= new Quaternion(0.1f, 0, 0);
+            }
         }
     }
     class MainClass

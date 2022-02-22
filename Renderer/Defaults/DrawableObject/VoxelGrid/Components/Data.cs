@@ -41,9 +41,9 @@ namespace Scene.Defaults
                 var size = new int[3];
                 GL.GetUniform(voxelGrid.shaderProgram.Id, voxelGrid.shaderProgram.GetUniform("voxelGridSize"), size);
 
-                // Проверка на выход за границы
-                if (pos.X < 0 || pos.X >= size[0] || pos.Y < 0 || pos.Y >= size[1] || pos.Z < 0 || pos.Z >= size[2])
-                    throw new IndexOutOfRangeException("Индекс выходит за границы сетки");
+                //// Проверка на выход за границы
+                //if (pos.X < 0 || pos.X >= size[0] || pos.Y < 0 || pos.Y >= size[1] || pos.Z < 0 || pos.Z >= size[2])
+                //    throw new IndexOutOfRangeException("Индекс выходит за границы сетки");
 
                 // Установка данных
                 var id = pos.X + pos.Y * size[0] + pos.Z * size[1] * size[2];
