@@ -19,6 +19,12 @@ namespace Scene.Defaults
                 this.voxelGrid = voxelGrid;
             }
 
+            public int SSBO
+            {
+                get { return ssbo; }
+            }
+            
+
             public void GenerateGrid(Vector3i size)
             {
                 voxelGrid.shaderProgram.Use();
@@ -31,7 +37,7 @@ namespace Scene.Defaults
                 ssbo = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ShaderStorageBuffer, ssbo);
                 GL.BufferData(BufferTarget.ShaderStorageBuffer, 16 * size.X * size.Y * size.Z, IntPtr.Zero, BufferUsageHint.DynamicDraw);
-                GL.BindBuffersBase(BufferRangeTarget.ShaderStorageBuffer, 3, 1, ref ssbo);
+                GL.BindBuffersBase(BufferRangeTarget.ShaderStorageBuffer, 0, 1, ref ssbo);
                 GL.BindBuffer(BufferTarget.ShaderStorageBuffer, 0);
             }
 
@@ -42,11 +48,12 @@ namespace Scene.Defaults
                 GL.GetUniform(voxelGrid.shaderProgram.Id, voxelGrid.shaderProgram.GetUniform("voxelGridSize"), size);
 
                 //// Проверка на выход за границы
-                //if (pos.X < 0 || pos.X >= size[0] || pos.Y < 0 || pos.Y >= size[1] || pos.Z < 0 || pos.Z >= size[2])
-                //    throw new IndexOutOfRangeException("Индекс выходит за границы сетки");
+                if (pos.X < 0 || pos.X >= size[0] || pos.Y < 0 || pos.Y >= size[1] || pos.Z < 0 || pos.Z >= size[2])
+                    throw new IndexOutOfRangeException("Индекс выходит за границы сетки");
 
                 // Установка данных
                 var id = pos.X + pos.Y * size[0] + pos.Z * size[1] * size[2];
+
                 GL.NamedBufferSubData(ssbo, new IntPtr(16 * id), 12, ref color);
             }
 

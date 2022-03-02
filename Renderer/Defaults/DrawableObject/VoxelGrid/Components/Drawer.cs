@@ -126,6 +126,8 @@ namespace Scene.Defaults
                 // Использование VAO для отрисовки треугольников.
                 // (2 треугольника образующих прямоугольник экрана отрисовки).
                 GL.BindVertexArray(vao);
+                var ssbo = voxelGrid.Data.SSBO;
+                GL.BindBuffersBase(BufferRangeTarget.ShaderStorageBuffer, 0, 1, ref ssbo); // Активация SSBO | TODO: Проверить что это было хорошим решением :D
                 GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
                 GL.BindVertexArray(0);
             }
