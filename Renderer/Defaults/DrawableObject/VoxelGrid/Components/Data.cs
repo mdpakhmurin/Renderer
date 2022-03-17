@@ -52,7 +52,7 @@ namespace Scene.Defaults
                     throw new IndexOutOfRangeException("Индекс выходит за границы сетки");
 
                 // Установка данных
-                var id = pos.X + pos.Y * size[0] + pos.Z * size[1] * size[2];
+                var id = pos.X + pos.Y * size[0] + pos.Z * size[0] * size[1];
 
                 GL.NamedBufferSubData(ssbo, new IntPtr(16 * id), 12, ref color);
             }
@@ -69,7 +69,7 @@ namespace Scene.Defaults
 
                 // Получение данных
                 Vector3 color = new Vector3(0, 0, 0);
-                var id = pos.X + pos.Y * size[0] + pos.Z * size[1] * size[2];
+                var id = pos.X + pos.Y * size[0] + pos.Z * size[0] * size[1];
                 GL.GetNamedBufferSubData(ssbo, new IntPtr(16 * id), 12, ref color);
 
                 return color;
